@@ -6,7 +6,7 @@
 
 ## 引入库
 ``` bash
-go get github.com/ArtLjn/Notification@v0.1.0
+go get github.com/ArtLjn/Notification@v0.1.1
 ```
 ## 钉钉推送使用
 ```go
