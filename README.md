@@ -21,3 +21,25 @@ func TestSendDingDing(t *testing.T) {
 	}
 }
 ```
+
+## 邮件推送使用
+```go
+func TestSendEmail(t *testing.T) {
+	// 创建 EmailNotify 实例
+	email := server.NewEmailNotify(
+		"your_email@example.com",         // 发件人邮箱
+		"your_password",                  // 邮箱密码或授权码
+		"smtp.example.com",               // SMTP 服务器地址
+		465,                              // SMTP 端口
+		[]string{"receiver@example.com"}, // 收件人列表
+	)
+
+	// 发送邮件
+	err := email.Send("测试邮件标题", "这是一封通过 Golang 发送的测试邮件内容。")
+	if err != nil {
+		fmt.Println("邮件发送失败:", err)
+	} else {
+		fmt.Println("邮件发送成功！")
+	}
+}
+```

@@ -7,6 +7,8 @@
 
 package server
 
+import "gopkg.in/gomail.v2"
+
 // EmailNotify 邮件通知
 type EmailNotify struct {
 	Username string
@@ -16,7 +18,7 @@ type EmailNotify struct {
 	Receiver []string
 }
 
-// NewEmailNotify create a new email notify, and return the pointer
+// NewEmailNotify 创建一个新的 EmailNotify 实例
 func NewEmailNotify(username, password, host string, port int, receiver []string) *EmailNotify {
 	return &EmailNotify{
 		Username: username,
@@ -27,7 +29,18 @@ func NewEmailNotify(username, password, host string, port int, receiver []string
 	}
 }
 
+// Send 使用 SSL 发送邮件
 func (e *EmailNotify) Send(title, content string) error {
+	// 创建邮件
+	m := gomail.NewMessage()
+	m.SetHeader("From", e.Username) // 确保发件人邮箱格式正确
+	m.SetHeader("To", e.Receiver...)
+	m.SetHeader("Subject", title)
+	m.SetBody("text/plain", content)
 
-	return nil
+	// 创建 SMTP 连接
+	d := gomail.NewDialer(e.Host, e.Port, e.Username, e.Password)
+
+	// 发送邮件
+	return d.DialAndSend(m)
 }
